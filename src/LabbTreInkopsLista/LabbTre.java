@@ -26,6 +26,7 @@ public class LabbTre {
                 case 2 -> addToList();
                 case 3 -> deleteProduct();
                 case 4 -> updates();
+                case 5 -> counter();
             }
         }
     }
@@ -48,7 +49,7 @@ public class LabbTre {
             pstmt.setInt(2,productId);
             pstmt.setInt(1,productAmountInput);
             pstmt.executeUpdate();
-            System.out.println("Du har lagt till en ny vara");
+            System.out.println("Du har ändrat en vara");
         }
         catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -92,8 +93,9 @@ public class LabbTre {
                 1  - Visa hela inköpslistan
                 2  - Lägga till inköpslistan
                 3  - Ta bort från inköpslistan
-                4  - Ändra antal i listan
-                """); // glöm inte att lägga till listan
+                4  - Ändra antal av en vara
+                5  - Se antal varor i listan
+                """);
     }
     private static void addToList(){
         System.out.println("Skriv vilken vara du vill lägga till");
@@ -143,4 +145,20 @@ public class LabbTre {
         }
     }
 
+    private static void counter() {
+        String sql = "SELECT COUNT(inkopsListaVara) FROM inkopsLista";
+
+        try {
+            Connection conn = connect();
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            ResultSet rs = pstmt.executeQuery();
+            rs.next();
+            int count = rs.getInt(1);
+            System.out.println(count);
+
+        }
+        catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 }
